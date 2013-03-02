@@ -1,19 +1,21 @@
 import AssemblyKeys._
 
-name := "gcalmainte"
+name := "nakayoku-bot"
 
 version := "1.0"
 
 scalaVersion := "2.9.2"
 
-resolvers += "google-api-services" at "http://mavenrepo.google-api-java-client.googlecode.com/hg"
+resolvers ++= Seq(
+  "twitter4j.org" at "http://twitter4j.org/maven2",
+  "ATILIKA dependencies" at "http://www.atilika.org/nexus/content/repositories/atilika"
+)
 
 libraryDependencies ++= Seq(
+    "org.atilika.kuromoji" % "kuromoji" % "0.7.7",
     "joda-time" % "joda-time" % "2.1",
     "org.joda" % "joda-convert" % "1.1",
-    "com.google.apis" % "google-api-services-calendar" % "v3-rev16-1.8.0-beta",
-    "com.google.http-client" % "google-http-client-jackson2" % "1.12.0-beta",
-    "com.google.oauth-client" % "google-oauth-client-jetty" % "1.12.0-beta"
+    "org.twitter4j" % "twitter4j-core" % "3.0.3"
 )
 
 scalacOptions ++= Seq("-encoding", "UTF-8")

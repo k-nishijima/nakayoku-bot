@@ -1,32 +1,51 @@
-グーグルカレンダーメンテナンス用コマンド
+沖縄高専xギー沖発火村
 ========================================
 
-* @see http://code.google.com/p/google-api-java-client/wiki/APIs#Calendar_API
-* @see http://javadoc.google-api-java-client.googlecode.com/hg/apis/calendar/v3/index.html
+* @see http://atnd.org/events/36841
 
-# 初期設定
+## 今回のテーマは「もっと仲良くなりたい」
+2013年3月1日 @k_nishijima
 
-* mainte.scalaのtargetCalId変数に操作したいカレンダーIDを入れておく
+# @hogehoge さんについて教えてボット
+誰それの趣味嗜好評判を登録しておくと、誰かとお近づきになりたいときにまず1クッション入れて情報収集が出来る。
+登録がなかったら...適当なことを言って「かも知れないし★」などとオチャラケて返す。
 
-* 元ネタ：以下のサンプルをscalaで動くようにしただけです
+例えば、
 
-    http://code.google.com/p/google-api-java-client/source/browse/calendar-cmdline-sample/src/main/java/com/google/api/services/samples/calendar/cmdline/CalendarSample.java?repo=samples
+* ねえ @hogebot k_nishijimaさんについて教えて？
 
-* OAuth認証が出来るように、APIコンソールでClientIdを生成し、src/main/resources/client_secrets.json に記述しておく。
+とmemtionがきたら、
 
-* APIコンソール上の手順は以下のとおり：
-    操作したいアカウントにログインした状態で、グーグルカレンダーAPIの設定をする。
+* k_nishijimaさんはクラウドの鬼で、優しい、けど怒らせると怖いらしいよ
 
-    `Register Your Application
+とか、学習データの中からランダムでピックアップして140文字以内で返す。
+学習データは
 
-     Visit the Google apis console / login with target google Calendar user.
-     https://code.google.com/apis/console/?api=calendar
-  
-     If this is your first time, click "Create project..."
-     Click on "API Access", and then on "Create an OAuth 2.0 Client ID...".
-     Enter a product name and click "Next".
-     Select "Installed application" and click "Create client ID".
-     Enter the "Client ID" and "Client secret" shown under "Client ID for installed applications" into src/main/resources/client_secrets.json file after checking out the code (otherwise you will get a 400 INVALID_CLIENT error in the browser when running the sample).`
+* @hogebot k_nishijimaさんは怒らせると怖いらしいよ
+
+をターゲット：「k_nishijima」/評価「怒らせると怖いらしいよ」などと分割して入力する。
+
+## 入力データについてはゆるく
+
+例えば入力データについては、敬称表現（さん、くん、君、様）はあってもなくても良いように（無視して）処理しなければいけない
+
+## 形態素解析
+
+ライセンス的にも問題なく、簡単に利用できそうなライブラリKuromoji http://www.atilika.org/ を見つけたのでこれを利用することとする。
+
+## 質問の入力
+
+memtionで入力されたツイートで、動詞+オシエが含まれ、かつ「?」「？」or命令形が含まれる文章を質問とみなす。
+
+* 「教えて?」
+* 「教えろ」（命令形）
+* 「教えてください」（これも命令形）
+
+## 学習（評価）の入力
+
+memtionで入力されたツイートで、「質問文」とみなしたもの以外は全て学習に使う。
+まず英単語をすべて取り出しこれをターゲットとみなす（評価文に英単語が含まれるものも含む。これは仕様とする）。これに対する評価として、文中初出の助詞以降のを評価文とみなす。
+
 
 
 # 実行
@@ -34,12 +53,3 @@
     $ sbt
     > compile
     > run
-
-* 追加するイベント、期間、時間などを適当に設定の上、実行。
-
-* 初回実行時にはブラウザが起動してOAuth認証を実行する。
-
-    認証結果は、 ~/.credentials/ 以下に保存されるので、
-    別アカウントで操作する場合にはこのファイルをリネームする操作が必要
-
-	
